@@ -4,6 +4,7 @@ const { contractValidation } = require('../utils/validators');
 const {
   getAllContracts,
   getContractById,
+  getContractsByPropertyId,
   createContract,
   updateContract,
   deleteContract
@@ -16,6 +17,7 @@ const router = express.Router();
 
 // Contract routes
 router.get('/', getAllContracts);
+router.get('/property/:propertyId', getContractsByPropertyId);
 router.get('/:id', getContractById);
 router.post('/', contractValidation, createContract);
 router.put('/:id', contractValidation, updateContract);

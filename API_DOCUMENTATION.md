@@ -53,6 +53,10 @@ Development: http://localhost:3000/api
 - **GET** `/contracts`
 - Returns: Array of contract objects
 
+### Get Property Contracts
+- **GET** `/contracts/property/:propertyId`
+- Returns: Array of contract objects for a specific property
+
 ### Get Contract
 - **GET** `/contracts/:id`
 - Returns: Single contract object

@@ -3,6 +3,43 @@ const db = require('../db');
 
 const { supabase } = db;
 
+// Get contracts by property ID
+const getContractsByPropertyId = async (req, res) => {
+  try {
+    const { propertyId } = req.params;
+    
+    // Check if property exists
+    const { data: property, error: propertyError } = await supabase
+      .from('properties')
+      .select('*')
+      .eq('property_id', propertyId)
+      .single();
+    
+    if (propertyError) {
+      return res.status(404).json({ error: 'Property not found' });
+    }
+    
+    const { data, error } = await supabase
+      .from('contracts')
+      .select('*, property:properties(name)')
+      .eq('property_id', propertyId)
+      .order('end_date', { ascending: true });
+    
+    if (error) throw error;
+    
+    // Rename contract_id to id in the response to follow API conventions
+    const formattedContracts = data.map(contract => {
+      const { contract_id, ...rest } = contract;
+      return { id: contract_id, ...rest };
+    });
+    
+    res.json(formattedContracts);
+  } catch (error) {
+    console.error('Error getting contracts by property:', error);
+    res.status(500).json({ error: 'Failed to retrieve contracts for this property' });
+  }
+};
+
 // Get all contracts
 const getAllContracts = async (req, res) => {
   try {
@@ -239,6 +276,7 @@ const deleteContract = async (req, res) => {
 module.exports = {
   getAllContracts,
   getContractById,
+  getContractsByPropertyId,
   createContract,
   updateContract,
   deleteContract
