@@ -1,0 +1,591 @@
+{
+  "info": {
+    "name": "Property Manager API",
+    "description": "Collection for testing the Property Manager application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Authenticate a user and receive a JWT token"
+          },
+          "response": []
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"New User\",\n    \"email\": \"newuser@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            },
+            "description": "Register a new user"
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            },
+            "description": "Logout the current user"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Properties",
+      "item": [
+        {
+          "name": "Get All Properties",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties"]
+            },
+            "description": "Get all properties for the authenticated user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Property by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/properties/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Property ID"
+                }
+              ]
+            },
+            "description": "Get a specific property by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Property",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Mountain View Apartment\",\n    \"property_type\": \"Apartment\",\n    \"address\": \"123 Mountain View Rd, City, State, 12345\",\n    \"purchase_price\": 250000,\n    \"current_value\": 320000,\n    \"monthly_rent\": 1800,\n    \"area_sqm\": 85,\n    \"status\": \"vacant\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/properties",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties"]
+            },
+            "description": "Create a new property"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Property",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Mountain View Apartment\",\n    \"property_type\": \"Apartment\",\n    \"address\": \"123 Mountain View Rd, City, State, 12345\",\n    \"purchase_price\": 250000,\n    \"current_value\": 340000,\n    \"monthly_rent\": 1900,\n    \"area_sqm\": 85,\n    \"status\": \"occupied\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/properties/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Property ID"
+                }
+              ]
+            },
+            "description": "Update an existing property"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Property",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/properties/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Property ID"
+                }
+              ]
+            },
+            "description": "Delete a property"
+          },
+          "response": []
+        },
+        {
+          "name": "Upload Property Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/path/to/image.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/properties/:id/images",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties", ":id", "images"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Property ID"
+                }
+              ]
+            },
+            "description": "Upload an image for a property"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Property Images",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/properties/:id/images",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "properties", ":id", "images"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Property ID"
+                }
+              ]
+            },
+            "description": "Get all images for a property"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "item": [
+        {
+          "name": "Get All Contracts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contracts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contracts"]
+            },
+            "description": "Get all contracts for the authenticated user"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Expiring Contracts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contracts/expiring",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contracts", "expiring"]
+            },
+            "description": "Get contracts that are expiring soon"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Contract by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/contracts/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contracts", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Contract ID"
+                }
+              ]
+            },
+            "description": "Get a specific contract by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"property_id\": 1,\n    \"tenant_name\": \"John Doe\",\n    \"start_date\": \"2023-01-01\",\n    \"end_date\": \"2023-12-31\",\n    \"monthly_rent\": 1800,\n    \"payment_day\": 5,\n    \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contracts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contracts"]
+            },
+            "description": "Create a new rental contract"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Contract",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"property_id\": 1,\n    \"tenant_name\": \"John Doe\",\n    \"start_date\": \"2023-01-01\",\n    \"end_date\": \"2024-12-31\",\n    \"monthly_rent\": 1850,\n    \"payment_day\": 5,\n    \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/contracts/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "contracts", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Contract ID"
+                }
+              ]
+            },
+            "description": "Update an existing contract"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Documents",
+      "item": [
+        {
+          "name": "Upload Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "document",
+                  "type": "file",
+                  "src": "/path/to/document.pdf"
+                },
+                {
+                  "key": "property_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "document_type",
+                  "value": "deed",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Property deed document",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents"]
+            },
+            "description": "Upload a document related to a property or contract"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Documents by Property",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/property/:propertyId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents", "property", ":propertyId"],
+              "variable": [
+                {
+                  "key": "propertyId",
+                  "value": "1",
+                  "description": "Property ID"
+                }
+              ]
+            },
+            "description": "Get all documents related to a property"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Documents by Contract",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/contract/:contractId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents", "contract", ":contractId"],
+              "variable": [
+                {
+                  "key": "contractId",
+                  "value": "1",
+                  "description": "Contract ID"
+                }
+              ]
+            },
+            "description": "Get all documents related to a contract"
+          },
+          "response": []
+        },
+        {
+          "name": "Download Document",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/documents/:id/download",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "documents", ":id", "download"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "description": "Document ID"
+                }
+              ]
+            },
+            "description": "Download a specific document"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Dashboard Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/dashboard/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "dashboard", "summary"]
+            },
+            "description": "Get summary statistics for the dashboard"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

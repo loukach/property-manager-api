@@ -1,0 +1,22 @@
+{
+  "name": "property-manager-tests",
+  "version": "1.0.0",
+  "description": "Tests for Property Manager API",
+  "main": "index.js",
+  "scripts": {
+    "setup": "node setup.js",
+    "test": "jest",
+    "test:properties": "jest properties.test.js",
+    "test:contracts": "jest contracts.test.js",
+    "test:dashboard": "jest dashboard.test.js"
+  },
+  "jest": {
+    "verbose": true,
+    "testTimeout": 10000
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "jest": "^29.7.0"
+  }
+}
