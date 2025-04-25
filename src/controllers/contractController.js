@@ -13,12 +13,11 @@ const getAllContracts = async (req, res) => {
     
     if (error) throw error;
     
-    // Transform data to match expected format
-    const formattedContracts = data.map(contract => ({
-      ...contract,
-      id: contract.contract_id,
-      property_name: contract.property?.name || 'Unknown'
-    }));
+    // Rename contract_id to id in the response to follow API conventions
+    const formattedContracts = data.map(contract => {
+      const { contract_id, ...rest } = contract;
+      return { id: contract_id, ...rest };
+    });
     
     res.json(formattedContracts);
   } catch (error) {
@@ -42,12 +41,9 @@ const getContractById = async (req, res) => {
       return res.status(404).json({ error: 'Contract not found' });
     }
     
-    // Transform data to match expected format
-    const formattedContract = {
-      ...data,
-      id: data.contract_id,
-      property_name: data.property?.name || 'Unknown'
-    };
+    // Rename contract_id to id in the response to follow API conventions
+    const { contract_id, ...rest } = data;
+    const formattedContract = { id: contract_id, ...rest };
     
     res.json(formattedContract);
   } catch (error) {
@@ -113,12 +109,9 @@ const createContract = async (req, res) => {
     
     if (error) throw error;
     
-    // Format response
-    const createdContract = {
-      ...data[0],
-      id: data[0].contract_id,
-      property_name: data[0].property?.name || 'Unknown'
-    };
+    // Rename contract_id to id in the response to follow API conventions
+    const { contract_id, ...rest } = data[0];
+    const createdContract = { id: contract_id, ...rest };
     
     res.status(201).json(createdContract);
   } catch (error) {
@@ -193,12 +186,9 @@ const updateContract = async (req, res) => {
     
     if (error) throw error;
     
-    // Format response
-    const updatedContract = {
-      ...data[0],
-      id: data[0].contract_id,
-      property_name: data[0].property?.name || 'Unknown'
-    };
+    // Rename contract_id to id in the response to follow API conventions
+    const { contract_id, ...rest } = data[0];
+    const updatedContract = { id: contract_id, ...rest };
     
     res.json(updatedContract);
   } catch (error) {

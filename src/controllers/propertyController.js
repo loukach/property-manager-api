@@ -13,11 +13,11 @@ const getAllProperties = async (req, res) => {
     
     if (error) throw error;
     
-    // Map property_id to id for compatibility
-    const formattedProperties = data.map(property => ({
-      ...property,
-      id: property.property_id
-    }));
+    // Rename property_id to id in the response to follow API conventions
+    const formattedProperties = data.map(property => {
+      const { property_id, ...rest } = property;
+      return { id: property_id, ...rest };
+    });
     
     res.json(formattedProperties);
   } catch (error) {
@@ -41,11 +41,9 @@ const getPropertyById = async (req, res) => {
       return res.status(404).json({ error: 'Property not found' });
     }
     
-    // Map property_id to id for compatibility
-    const formattedProperty = {
-      ...data,
-      id: data.property_id
-    };
+    // Rename property_id to id in the response to follow API conventions
+    const { property_id, ...rest } = data;
+    const formattedProperty = { id: property_id, ...rest };
     
     res.json(formattedProperty);
   } catch (error) {
@@ -75,11 +73,9 @@ const createProperty = async (req, res) => {
     
     if (error) throw error;
     
-    // Map property_id to id for compatibility
-    const createdProperty = {
-      ...data[0],
-      id: data[0].property_id
-    };
+    // Rename property_id to id in the response to follow API conventions
+    const { property_id, ...rest } = data[0];
+    const createdProperty = { id: property_id, ...rest };
     
     res.status(201).json(createdProperty);
   } catch (error) {
@@ -122,11 +118,9 @@ const updateProperty = async (req, res) => {
     
     if (error) throw error;
     
-    // Map property_id to id for compatibility
-    const updatedProperty = {
-      ...data[0],
-      id: data[0].property_id
-    };
+    // Rename property_id to id in the response to follow API conventions
+    const { property_id, ...rest } = data[0];
+    const updatedProperty = { id: property_id, ...rest };
     
     res.json(updatedProperty);
   } catch (error) {
@@ -232,7 +226,7 @@ const uploadPropertyImage = async (req, res) => {
     if (insertError) throw insertError;
     
     res.status(201).json({
-      image_id: imageId,
+      id: imageId,
       property_id: id,
       file_name: fileName,
       public_url: publicUrl
@@ -268,7 +262,13 @@ const getPropertyImages = async (req, res) => {
     
     if (error) throw error;
     
-    res.json(data);
+    // Rename image_id to id in the response
+    const formattedImages = data.map(image => {
+      const { image_id, ...rest } = image;
+      return { id: image_id, ...rest };
+    });
+    
+    res.json(formattedImages);
   } catch (error) {
     console.error('Error getting property images:', error);
     res.status(500).json({ error: 'Failed to retrieve property images' });

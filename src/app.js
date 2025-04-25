@@ -107,11 +107,9 @@ app.get('/api/properties/:id', async (req, res) => {
       return res.status(404).json({ error: 'Property not found' });
     }
     
-    // Map property_id to id for compatibility with tests
-    const formattedProperty = {
-      ...data,
-      id: data.property_id
-    };
+    // Rename property_id to id in the response to follow API conventions
+    const { property_id, ...rest } = data;
+    const formattedProperty = { id: property_id, ...rest };
     
     res.json(formattedProperty);
   } catch (error) {
@@ -130,11 +128,11 @@ app.get('/api/contracts', async (_req, res) => {
     
     if (error) throw error;
     
-    // Transform data to match expected format
-    const formattedData = data.map(contract => ({
-      ...contract,
-      property_name: contract.property?.name || 'Unknown'
-    }));
+    // Remove property_id and rename contract_id to id
+    const formattedData = data.map(contract => {
+      const { contract_id, ...rest } = contract;
+      return { id: contract_id, ...rest };
+    });
     
     res.json(formattedData);
   } catch (error) {
@@ -155,12 +153,9 @@ app.get('/api/contracts/:id', async (req, res) => {
       return res.status(404).json({ error: 'Contract not found' });
     }
     
-    // Transform data to match expected format
-    const formattedContract = {
-      ...data,
-      id: data.contract_id,
-      property_name: data.property?.name || 'Unknown'
-    };
+    // Rename contract_id to id in the response to follow API conventions
+    const { contract_id, ...rest } = data;
+    const formattedContract = { id: contract_id, ...rest };
     
     res.json(formattedContract);
   } catch (error) {
@@ -170,16 +165,16 @@ app.get('/api/contracts/:id', async (req, res) => {
 });
 
 // Redirect to Supabase storage for property images
-app.get('/api/properties/:propertyId/images/:imageId', async (req, res) => {
+app.get('/api/properties/:propertyId/images/:id', async (req, res) => {
   try {
-    const { propertyId, imageId } = req.params;
+    const { propertyId, id } = req.params;
     
     // Get image record
     const { data: image, error } = await supabase
       .from('images')
       .select('public_url')
       .eq('property_id', propertyId)
-      .eq('image_id', imageId)
+      .eq('image_id', id)
       .single();
     
     if (error || !image) {
@@ -273,12 +268,16 @@ app.get('/api/dashboard/summary', async (_req, res) => {
       .limit(5);
     
     // Format the expiring contracts to match expected output
-    const formattedExpirations = (expiringContracts || []).map(contract => ({
-      contract_id: contract.contract_id,
-      end_date: contract.end_date,
-      tenant_name: contract.tenant_name,
-      property_name: contract.property && contract.property.name ? contract.property.name : 'Unknown'
-    }));
+    const formattedExpirations = (expiringContracts || []).map(contract => {
+      const { contract_id, ...rest } = contract;
+      const property_name = contract.property && contract.property.name ? contract.property.name : 'Unknown';
+      return {
+        id: contract_id,
+        end_date: contract.end_date,
+        tenant_name: contract.tenant_name,
+        property_name
+      };
+    });
     
     // Build dashboard summary
     const summary = {
