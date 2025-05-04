@@ -3,7 +3,7 @@ const axios = require('axios');
 
 const API_URL = process.env.API_URL || 'http://localhost:3000';
 const email = process.env.TEST_USER_EMAIL || 'admin@example.com';
-const password = process.env.TEST_USER_PASSWORD || 'admin123';
+const password = process.env.TEST_USER_PASSWORD || 'test_password_placeholder';
 
 async function testLogin() {
   console.log(`Testing login with email: ${email}`);

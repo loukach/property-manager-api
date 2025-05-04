@@ -1,20 +1,21 @@
 # Property Manager API
 
-A backend API for managing a Portuguese real estate portfolio. This is a proof-of-concept (POC) implementation.
+A backend API for managing real estate properties and their related contracts. This is a RESTful API built with Node.js, Express, and Supabase.
 
 ## Features
 
-- Property management
-- Contract tracking
-- Document storage
-- Dashboard with portfolio metrics
+- Property management (create, read, update, delete properties)
+- Contract tracking with tenant information
+- Document and image storage using Supabase Storage
+- Dashboard with portfolio metrics and analytics
+- Standardized RESTful API with consistent response formats
 
 ## Technologies Used
 
 - Node.js
 - Express.js
-- TypeScript
-- Supabase (for authentication and database)
+- JavaScript
+- Supabase (for database and storage)
 - JWT Authentication
 
 ## Database Schema
@@ -51,9 +52,8 @@ For the JavaScript version with Supabase support:
 npm run demo:supabase
 ```
 
-For the TypeScript implementation:
+To start the development server:
 ```
-npm run build:dev
 npm run dev
 ```
 
@@ -76,9 +76,10 @@ npm run dev
 ### Contracts
 - `GET /api/contracts` - List all contracts
 - `POST /api/contracts` - Create new contract
+- `GET /api/contracts/property/:propertyId` - Get contracts for a specific property
 - `GET /api/contracts/:id` - Get contract details
 - `PUT /api/contracts/:id` - Update contract
-- `GET /api/contracts/expiring` - Get contracts expiring within 60 days
+- `DELETE /api/contracts/:id` - Delete contract
 
 ### Documents
 - `POST /api/documents` - Upload document
@@ -101,12 +102,13 @@ NODE_ENV=development
 # Supabase Configuration
 SUPABASE_URL=your_supabase_url
 SUPABASE_API_KEY=your_supabase_api_key
-# SUPABASE_SERVICE_ROLE=your_supabase_service_role_key_for_admin_operations
 
-# JWT Configuration (used by Supabase Auth)
-JWT_SECRET=your_jwt_secret_key_replace_in_production
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_key
 JWT_EXPIRES_IN=24h
 ```
+
+⚠️ **Security Note**: Never commit your actual .env file with real credentials to the repository.
 
 ## Authentication
 
@@ -125,3 +127,7 @@ Required tables in your Supabase project:
 - images
 
 The schema should match the models used in the API. You can use the example Supabase schema in `src/db/supabase-schema.sql`.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

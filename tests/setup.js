@@ -9,7 +9,7 @@ if (!fs.existsSync(envPath)) {
   console.log('Creating .env file for testing');
   const envContent = `API_URL=http://localhost:3000
 TEST_USER_EMAIL=test@example.com
-TEST_USER_PASSWORD=password123`;
+TEST_USER_PASSWORD=test_password_placeholder`;
   
   fs.writeFileSync(envPath, envContent);
   console.log('.env file created successfully');
